@@ -127,7 +127,7 @@ MonoBehaviour:
   blockVFX: {fileID: 8832414824099966346, guid: f69c52f01e192764489e65655aba38d9, type: 3}
   hitSprites:
   - {fileID: 38433539612607256, guid: c23811459d0bad04187a2b751efc5be9, type: 3}
-  blockPointsPerDestroyed: 5
+  blockPointsPerDestroyed: 3
 --- !u!82 &8815809983911990134
 AudioSource:
   m_ObjectHideFlags: 0

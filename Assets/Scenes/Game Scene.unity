@@ -209,6 +209,12 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: BDM.UI.PauseMenu, Assembly-CSharp
       objectReference: {fileID: 0}
+    - target: {fileID: 2848114641707543836, guid: d958b0d2eb0aeaf49bbf877a15f1190f, type: 3}
+      propertyPath: m_text
+      value: 'Score: 0000
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 2848114641707543837, guid: d958b0d2eb0aeaf49bbf877a15f1190f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -402,6 +408,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 52952217297411839, guid: a94daf7655bd0de458171f5ae87c1611, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.24
+      objectReference: {fileID: 0}
     - target: {fileID: 4694348842113852539, guid: a94daf7655bd0de458171f5ae87c1611, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -450,9 +460,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ingame Core
       objectReference: {fileID: 0}
-    - target: {fileID: 5529057864833052797, guid: a94daf7655bd0de458171f5ae87c1611, type: 3}
-      propertyPath: randomFactor
-      value: -2.2
+    - target: {fileID: 5529057864833052796, guid: a94daf7655bd0de458171f5ae87c1611, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a94daf7655bd0de458171f5ae87c1611, type: 3}

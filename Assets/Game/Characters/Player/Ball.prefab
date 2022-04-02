@@ -124,6 +124,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5d3515608e1673b4cbfe19bc726c922e, type: 3}
   - {fileID: 8300000, guid: c4a89a6e1709b354e8c2749388b08e39, type: 3}
   randomFactor: -1.2
+  spawnDelay: 0.2
   configuration: {fileID: 11400000, guid: a022fa8390c60974cb910164d69df8e6, type: 2}
 --- !u!82 &3897525471470079891
 AudioSource:

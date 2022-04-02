@@ -9,6 +9,8 @@ namespace BDM.UI
         [SerializeField] private GameObject pauseMenu;
         EventBus bus;
 
+        private bool isPaused = false;
+
         private void Awake()
         {
             bus = EventBus.Instance;
@@ -16,16 +18,18 @@ namespace BDM.UI
 
         public void CloseMenu()
         {
-            pauseMenu.SetActive(false);
-            bus.Publish(EventChannel.PauseToggle, this, "Game Unpaused"); //Create different event for this?
             Time.timeScale = 1;
+            isPaused = !isPaused;
+            pauseMenu.SetActive(false);
+            bus.Publish(EventChannel.PauseToggle, this, isPaused); //Create different event for this?
         }
 
         public void OpenMenu()
         {
-            pauseMenu.SetActive(true);
-            bus.Publish(EventChannel.PauseToggle, this, "Game Paused"); //Create different event for this?
             Time.timeScale = 0;
+            isPaused = !isPaused;
+            pauseMenu.SetActive(true);
+            bus.Publish(EventChannel.PauseToggle, this, isPaused); //Create different event for this?
         }
 
         //TODO in future iteration, figure out a better way to do this

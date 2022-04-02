@@ -9,6 +9,7 @@ using BDM.Config;
 using BDM.EventManagement;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace BDM.PlayerControl
 {
@@ -42,7 +43,7 @@ namespace BDM.PlayerControl
 		private float oldYPosition;
 		private int loopHitCheck;
 		private float loopRange = 1.2f;
-		private int maxLoopHit = 2;
+		private int maxLoopHit = 1; //zero indexed, so maxHits is actually 2 (0, 1)
 
 		private EventBus bus;
 
@@ -53,16 +54,20 @@ namespace BDM.PlayerControl
 
         private void OnEnable()
 		{
-			bus.Subscribe(EventChannel.Countdown, ResetBallImmediate);
+			bus.Subscribe(EventChannel.Countdown, HandleCountdown);
 			bus.Subscribe(EventChannel.TakeLife, ResetBall);
 			bus.Subscribe(EventChannel.GameOver, DisableInput);
+			bus.Subscribe(EventChannel.PauseToggle, HandlePause);
+			bus.Subscribe(EventChannel.NewWave, EnableInput);
 		}
 
 		private void OnDisable()
 		{
-			bus.Unsubscribe(EventChannel.Countdown, ResetBallImmediate);
+			bus.Unsubscribe(EventChannel.Countdown, HandleCountdown);
 			bus.Unsubscribe(EventChannel.TakeLife, ResetBall);
 			bus.Unsubscribe(EventChannel.GameOver, DisableInput);
+			bus.Unsubscribe(EventChannel.PauseToggle, HandlePause);
+			bus.Unsubscribe(EventChannel.NewWave, EnableInput);
 		}
 
 		private void Start()
@@ -83,7 +88,7 @@ namespace BDM.PlayerControl
 		private float InitializeVelocityX()
         {
 			//Could be modified in future iteration
-			return 2;
+			return 1;
         }
 		
 		private float InitializeVelocityY()
@@ -116,9 +121,12 @@ namespace BDM.PlayerControl
 
 			LockBallToPaddle();
 
-            if (configuration.isMobile)
+			if (configuration.isMobile)
             {
-                LaunchBall();
+				if(Input.touchCount > 0 && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                {
+					LaunchBall();
+				}
             }
             else
             {
@@ -163,12 +171,23 @@ namespace BDM.PlayerControl
 				return;
 			if (disableInput)
 				return;
+			if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+				return;
 
-			if (Input.GetTouch(0).phase == TouchPhase.Ended && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+			if (Input.GetTouch(0).phase == TouchPhase.Ended)
 			{
 				rb.velocity = new Vector2(xVelocity, yVelocity);
 				ballLaunched = true;
 			}
+		}
+
+		private bool IsPointerOverUIObject()
+		{
+			var touchPosition = Input.GetTouch(0).position;
+			var eventData = new PointerEventData(EventSystem.current) { position = touchPosition };
+			var results = new List<RaycastResult>();
+			EventSystem.current.RaycastAll(eventData, results);
+			return results.Count > 0;
 		}
 
 		public void ResetBall(object e)
@@ -180,6 +199,12 @@ namespace BDM.PlayerControl
         {
 			transform.position = GetPaddlePosition();
 			ballLaunched = false;
+        }
+
+		public void HandleCountdown(object e)
+        {
+			DisableInput(null);
+			ResetBallImmediate(null);
 		}
 
 		private IEnumerator PerformReset()
@@ -212,19 +237,6 @@ namespace BDM.PlayerControl
 				{
 					LoopPrevention();
 				}
-				//if (Mathf.Abs(transform.position.y - oldYPosition) < loopRange)
-				//{
-				//	loopHitCheck++;
-				//}
-				//else
-				//            {
-				//	loopHitCheck = 0;
-				//            }
-
-				//if (loopHitCheck >= maxLoopHit)
-				//{
-				//	LoopPrevention();
-				//}
 			}
 			else 
             {
@@ -234,18 +246,44 @@ namespace BDM.PlayerControl
 			oldYPosition = transform.position.y;
 		}
 
-		//Loop prevention has not been thoroughly tested
 		private void LoopPrevention()
 		{
 			float velocityTweak = Random.Range(0, randomFactor);
 			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + velocityTweak);			
 		}
 
-		public void DisableInput(object e)
+		private void HandlePause(object e)
+        {
+			EventObject<bool> _event = e as EventObject<bool>;
+			if (_event == null)
+				return;
+			bool isPaused = _event.value;
+
+			if(isPaused)
+            {
+				DisableInput(null);
+			}
+			else
+            {
+				StartCoroutine(HandleResume());
+			}
+		}
+
+		private IEnumerator HandleResume()
+        {
+			yield return 0;
+			EnableInput(null);
+		}
+
+		private void DisableInput(object e)
         {
 			disableInput = true;
 		}
 
+		private void EnableInput(object e)
+		{
+			disableInput = false;
+		}
 	}
 
 }

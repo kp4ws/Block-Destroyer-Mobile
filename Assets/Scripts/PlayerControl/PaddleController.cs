@@ -6,6 +6,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using BDM.Config;
+using BDM.EventManagement;
+using System.Collections;
 
 namespace BDM.PlayerControl
 {
@@ -17,6 +19,25 @@ namespace BDM.PlayerControl
         private Camera gameCamera;
         private bool disableInput;
 
+        private EventBus bus;
+
+        private void Awake()
+        {
+            bus = EventBus.Instance;
+        }
+
+        private void OnEnable()
+        {
+            bus.Subscribe(EventChannel.GameOver, DisableInput);
+            bus.Subscribe(EventChannel.PauseToggle, HandlePause);
+        }
+
+        private void OnDisable()
+        {
+            bus.Unsubscribe(EventChannel.GameOver, DisableInput);
+            bus.Unsubscribe(EventChannel.PauseToggle, HandlePause);
+        }
+
         private void Start()
         {
             gameCamera = Camera.main;
@@ -26,6 +47,14 @@ namespace BDM.PlayerControl
         {
             if (disableInput)
                 return;
+
+            if(configuration.isMobile)
+            {
+                if (Input.touchCount == 0)
+                    return;
+                if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                    return;
+            }
 
             Vector2 paddlePos = new Vector2(transform.position.x, transform.position.y);
 
@@ -67,6 +96,39 @@ namespace BDM.PlayerControl
             }
 
             return gameCamera.ScreenToWorldPoint(Input.mousePosition).x;
+        }
+
+        private void HandlePause(object e)
+        {
+            EventObject<bool> _event = e as EventObject<bool>;
+            if (_event == null)
+                return;
+            bool isPaused = _event.value;
+
+            if (isPaused)
+            {
+                DisableInput(null);
+            }
+            else
+            {
+                StartCoroutine(HandleResume());
+            }
+        }
+
+        private IEnumerator HandleResume()
+        {
+            yield return 0;
+            EnableInput(null);
+        }
+
+        private void DisableInput(object e)
+        {
+            disableInput = true;
+        }
+
+        private void EnableInput(object e)
+        {
+            disableInput = false;
         }
     }
 

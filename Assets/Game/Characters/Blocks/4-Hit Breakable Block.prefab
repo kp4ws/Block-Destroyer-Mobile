@@ -129,7 +129,7 @@ MonoBehaviour:
   - {fileID: 1503016370545623098, guid: c23811459d0bad04187a2b751efc5be9, type: 3}
   - {fileID: 1489830567317918739, guid: c23811459d0bad04187a2b751efc5be9, type: 3}
   - {fileID: 38433539612607256, guid: c23811459d0bad04187a2b751efc5be9, type: 3}
-  blockPointsPerDestroyed: 21
+  blockPointsPerDestroyed: 9
 --- !u!82 &2697482770782368795
 AudioSource:
   m_ObjectHideFlags: 0

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Game Configuration
   m_EditorClassIdentifier: 
   autoPlay: 0
-  isMobile: 0
-  easySpeed: 7
+  isMobile: 1
+  easySpeed: 7.5
   normalSpeed: 10
   hardSpeed: 12
   intenseSpeed: 15
@@ -23,4 +23,3 @@ MonoBehaviour:
   minY: 5
   maxY: 12
   gameGravity: 0
-  unusedResolutions: 80070000900b00003804000038040000380400005603000080070000380400008305000083050000830500008002000080020000000a0000000a0000000a00008007000080070000000a0000

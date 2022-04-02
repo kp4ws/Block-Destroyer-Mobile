@@ -128,7 +128,7 @@ MonoBehaviour:
   hitSprites:
   - {fileID: 1489830567317918739, guid: c23811459d0bad04187a2b751efc5be9, type: 3}
   - {fileID: 38433539612607256, guid: c23811459d0bad04187a2b751efc5be9, type: 3}
-  blockPointsPerDestroyed: 13
+  blockPointsPerDestroyed: 6
 --- !u!82 &8162697589502622572
 AudioSource:
   m_ObjectHideFlags: 0
