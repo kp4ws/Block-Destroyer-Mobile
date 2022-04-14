@@ -16,9 +16,9 @@ namespace BDM.UI
             creditsMenu.SetActive(true);
         }
 
-        public void OpenURL()
+        public void OpenURL(string url)
         {
-            Application.OpenURL("http://nosoapradio.us/");
+            Application.OpenURL(url);
         }
     }
 }

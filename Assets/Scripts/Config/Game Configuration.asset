@@ -22,4 +22,4 @@ MonoBehaviour:
   maxX: 6
   minY: 5
   maxY: 12
-  gameGravity: 0
+  gameGravity: -1
